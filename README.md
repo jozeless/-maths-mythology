@@ -54,9 +54,13 @@ Las referencias nulas no generan peticiones. Si un archivo configurado falla, se
 
 Cada región tiene coordenadas porcentuales `position: { x, y }` respecto a todo el mapa y campos reservados `music`, `narration`, `story`, `challenges`, `reward` y `progress`. Estos campos no activan mecánicas todavía. Agregar una entrada a `regions` reutiliza mapa, rutas y pantalla provisional. La música actual es global; los recursos por región se integrarán con sus aventuras futuras.
 
-## GitHub Pages (publicación manual)
+## GitHub Pages
 
-`npm run build` genera una web estática en `dist/`. La configuración `base: './'` admite el subdirectorio del repositorio y las rutas hash evitan depender de reescrituras del servidor. Para publicar, subir el contenido de `dist/` mediante el proceso aprobado de GitHub Pages, o preparar un workflow oficial de Pages que construya con `npm ci && npm run build` y publique ese directorio. No se ha activado ningún despliegue automático.
+El workflow `.github/workflows/deploy.yml` instala con `npm ci`, ejecuta las pruebas de lógica, compila con `npm run build` y publica `dist/` mediante las acciones oficiales de GitHub Pages. Se activa con cada push a `main` y también admite ejecución manual mediante `workflow_dispatch`. Los pushes a ramas de trabajo y los pull requests no lo ejecutan.
+
+En GitHub, configurar **Settings → Pages → Build and deployment → Source → GitHub Actions** antes del primer despliegue. El job de publicación usa el entorno `github-pages` y permisos `pages: write` e `id-token: write`; el resto solo necesita lectura del repositorio. Los despliegues se serializan para evitar publicaciones simultáneas.
+
+La configuración de Vite `base: './'` genera rutas relativas compatibles con `https://jozeless.github.io/-maths-mythology/`. Las referencias de recursos usan `import.meta.env.BASE_URL` y las rutas de navegación usan hash, por lo que se mantienen dentro del subdirectorio sin requerir reescrituras del servidor. Se ha comprobado el build servido bajo `/-maths-mythology/`, incluida la navegación y recarga de una región.
 
 ## Alcance
 
