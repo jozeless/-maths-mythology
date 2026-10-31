@@ -12,6 +12,7 @@ document.querySelector('#app').innerHTML = '<header class="topbar"><a class="bra
 const screen = document.querySelector('#screen');
 const router = createRouter(hash => {
   const route = resolveRoute(hash, hero);
+  document.body.classList.toggle('is-cover', route.screen === 'cover');
   screen.innerHTML = route.screen === 'heroes' ? heroSelection(hero) : route.screen === 'map' ? map(hero) : route.screen === 'region' ? regionView(route.region) : cover();
   screen.querySelectorAll('img').forEach(img => {
     const cover = img.closest('.cover');
