@@ -7,9 +7,9 @@ test('cover, all heroes, every region, persistence and responsive map', async ({
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /MATHS/ })).toBeVisible();
+  await page.getByRole('button', { name: /EMPEZAR/ }).click();
   await page.getByRole('button', { name: 'Sonido apagado' }).click();
   await expect(page.getByRole('button', { name: 'Sonido apagado' })).toHaveAttribute('aria-pressed', 'false');
-  await page.getByRole('button', { name: /EMPEZAR/ }).click();
   for (const name of names) await expect(page.getByRole('button', { name: `Elegir a ${name}`, exact: true })).toBeVisible();
   for (const name of names) {
     await page.getByRole('button', { name: `Elegir a ${name}`, exact: true }).click();
@@ -41,7 +41,7 @@ test('keyboard navigation and unavailable storage', async ({ page }) => {
 });
 
 test('animated cover is complete, responsive and accessible', async ({ page }) => {
-  for (const viewport of [{ width: 1280, height: 720 }, { width: 768, height: 1024 }, { width: 390, height: 844 }]) {
+  for (const viewport of [{ width: 1920, height: 1080 }, { width: 1280, height: 720 }, { width: 768, height: 1024 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     await page.goto('/');
     const image = page.locator('.cover-art img');
@@ -54,15 +54,25 @@ test('animated cover is complete, responsive and accessible', async ({ page }) =
       const rect = img.getBoundingClientRect();
       const title = document.querySelector('.cover h1').getBoundingClientRect();
       const button = document.querySelector('.cover-action button').getBoundingClientRect();
-      return { ratio: rect.width / rect.height, fit: getComputedStyle(img).objectFit, titleWidth: title.width, bottom: rect.bottom, buttonTop: button.top, scroll: document.documentElement.scrollWidth, viewport: innerWidth };
+      return { ratio: rect.width / rect.height, fit: getComputedStyle(img).objectFit, titleWidth: title.width, bottom: rect.bottom, top: rect.top, buttonBottom: button.bottom, buttonTop: button.top, buttonCenter: button.x + button.width / 2, scroll: document.documentElement.scrollWidth, viewport: innerWidth };
     });
     expect(geometry.ratio).toBeCloseTo(16 / 9, 2);
     expect(geometry.fit).toBe('contain');
     expect(geometry.titleWidth).toBe(1);
-    expect(geometry.buttonTop).toBeGreaterThan(geometry.bottom);
+    expect(geometry.buttonTop).toBeGreaterThan(geometry.top);
+    expect(geometry.buttonBottom).toBeLessThan(geometry.bottom);
+    expect(geometry.buttonCenter).toBeCloseTo(viewport.width / 2, 0);
+    await expect(page.locator('.topbar')).toBeHidden();
+    await expect(page.locator('.site-footer')).toBeHidden();
+    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(viewport.height);
     expect(geometry.scroll).toBe(geometry.viewport);
     await page.getByRole('button', { name: /EMPEZAR/ }).click();
     await expect(page.getByRole('heading', { name: 'Elige a tu héroe' })).toBeVisible();
+    await expect(page.locator('.topbar')).toBeVisible();
+    await expect(page.locator('.site-footer')).toBeVisible();
+    await page.getByRole('button', { name: /PORTADA/ }).click();
+    await expect(page.locator('.topbar')).toBeHidden();
+    await expect(page.getByRole('button', { name: /EMPEZAR/ })).toBeVisible();
   }
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');

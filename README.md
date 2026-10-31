@@ -68,6 +68,12 @@ Portada → héroes → mapa → cuatro introducciones → mapa. Todas las regio
 
 ## Portada animada
 
-La portada usa el WebP existente `public/assets/images/portada-MM-0003-sirenas-clasicas-animada-1600x900.webp` (1600 × 900, 20 fotogramas), referenciado desde `assets.cover`. Se conserva el archivo original sin conversiones. La imagen completa mantiene 16:9, `object-fit: contain` e `image-rendering: pixelated`; el botón EMPEZAR aparece debajo. Al cargar, se ocultan las decoraciones provisionales y el título HTML queda accesible pero visualmente oculto, ya que está incluido en la ilustración. Si falla la carga, reaparece la presentación provisional.
+La portada usa el WebP existente `public/assets/images/portada-MM-0003-sirenas-clasicas-animada-1600x900.webp` (1600 × 900, 20 fotogramas), referenciado desde `assets.cover`. Se conserva el archivo original sin conversiones. La imagen completa mantiene 16:9, `object-fit: contain` e `image-rendering: pixelated`; el botón EMPEZAR aparece superpuesto en la zona inferior central del camino. Al cargar, se ocultan las decoraciones provisionales y el título HTML queda accesible pero visualmente oculto, ya que está incluido en la ilustración. Si falla la carga, reaparece la presentación provisional.
 
 Las animaciones CSS respetan `prefers-reduced-motion`. El navegador reproduce el WebP animado de forma nativa: un elemento `<img>` no permite pausar sus fotogramas con CSS ni con la API de imágenes. Por tanto, esa preferencia no detiene la animación interna del WebP. Para ofrecer una portada estática a esos usuarios se necesitaría un recurso estático autorizado; esta integración no añade imágenes ni modifica el original.
+
+## Portada inmersiva
+
+La portada ocupa `100dvh` y contiene una escena 16:9 tan grande como permite el viewport. En pantallas de otra proporción quedan bandas oscuras, sin recortar ni estirar el WebP. Solo se muestran la ilustración, EMPEZAR (240 × 72 px en escritorio) y su indicación; en móvil el control se reduce a 190 × 52 px para respetar la composición. El título permanece como encabezado accesible visualmente oculto.
+
+La clase de estado `body.is-cover` oculta exclusivamente en la portada el encabezado y footer. Al salir reaparecen, incluido el control de sonido conservado. No se necesita usar la API Fullscreen ni conceder permisos del navegador.
