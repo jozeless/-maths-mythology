@@ -1,6 +1,6 @@
 // Paths are relative to public/. Null keeps the illustrated placeholder visible.
 export const assets = {
-  cover: null,
+  cover: 'assets/images/portada-MM-0003-sirenas-clasicas-animada-1600x900.webp',
   map: null,
   music: null,
 };
