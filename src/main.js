@@ -14,7 +14,11 @@ const router = createRouter(hash => {
   const route = resolveRoute(hash, hero);
   screen.innerHTML = route.screen === 'heroes' ? heroSelection(hero) : route.screen === 'map' ? map(hero) : route.screen === 'region' ? regionView(route.region) : cover();
   screen.querySelectorAll('img').forEach(img => {
-    const hide = () => img.remove();
+    const cover = img.closest('.cover');
+    const hide = () => { cover?.classList.remove('cover-loaded'); img.remove(); };
+    const showCover = () => { if (cover && img.naturalWidth) cover.classList.add('cover-loaded'); };
+    img.addEventListener('load', showCover, { once: true });
+    if (img.complete) showCover();
     const sizeMap = () => { if (img.closest('.map-art') && img.naturalWidth) img.closest('.map-frame').style.aspectRatio = `${img.naturalWidth}/${img.naturalHeight}`; };
     img.addEventListener('load', sizeMap, { once: true });
     if (img.complete) sizeMap();
