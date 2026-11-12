@@ -154,3 +154,32 @@ test('definitive map and medallions align at every viewport and support keyboard
  }
  expect(errors).toEqual([]);
 });
+
+test('cyclops introduction and scene preserve each selected hero', async ({ page }) => {
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+ await page.goto('/');await page.getByRole('button',{name:'EMPEZAR',exact:true}).click();
+ for(const name of names){
+  await page.getByRole('button',{name:`Elegir a ${name}`,exact:true}).click();
+  await page.getByRole('button',{name:'Cueva del Cíclope',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Cueva del Cíclope'})).toBeVisible();
+  await page.getByRole('button',{name:'ENTRAR EN LA CUEVA',exact:true}).click();
+  for(const viewport of [{width:1280,height:720},{width:390,height:844}]){
+   await page.setViewportSize(viewport);
+   await expect(page.getByRole('heading',{name:'Cueva de Polifemo'})).toBeVisible();
+   await expect(page.getByText('¡Tengo sed! ¡Tráeme unas copas de vino!',{exact:true})).toBeVisible();
+   await expect(page.getByText('POLIFEMO',{exact:true})).toBeVisible();
+   const hero=page.getByRole('img',{name:`${name} sentado en una roca`});
+   await expect(hero).toHaveJSProperty('naturalWidth',600);
+   await expect(page.locator('.cyclops-character')).toHaveJSProperty('naturalWidth',900);
+   const stage=await page.locator('.cyclops-stage').boundingBox();expect(stage.width/stage.height).toBeCloseTo(16/9,2);
+   for(const selector of ['.cyclops-character','.cyclops-hero']){
+    const box=await page.locator(selector).boundingBox();expect(box.x).toBeGreaterThanOrEqual(stage.x);expect(box.x+box.width).toBeLessThanOrEqual(stage.x+stage.width);expect(box.y).toBeGreaterThanOrEqual(stage.y);expect(box.y+box.height).toBeLessThanOrEqual(stage.y+stage.height);
+   }
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(viewport.width);
+  }
+  await page.reload();await expect(page.getByRole('img',{name:`${name} sentado en una roca`})).toBeVisible();
+  await page.getByRole('button',{name:/VOLVER AL MAPA/}).click();await expect(page.locator('.hero-badge')).toContainText(name);
+  await page.getByRole('button',{name:'Cambiar héroe'}).click();
+ }
+ expect(errors).toEqual([]);
+});

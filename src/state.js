@@ -13,6 +13,7 @@ export function resolveRoute(hash, hero) {
   const route = hash.replace(/^#\/?/, '');
   if (route === 'heroes') return { screen: 'heroes' };
   if (route === 'mapa') return { screen: hero ? 'map' : 'heroes' };
+  if (route === 'aventura/ciclope') return { screen: hero ? 'cyclops' : 'heroes' };
   const region = regions.find(item => route === `region/${item.id}`);
   if (region) return hero ? { screen: 'region', region } : { screen: 'heroes' };
   return { screen: 'cover' };

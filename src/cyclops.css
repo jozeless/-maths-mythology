@@ -1,0 +1,13 @@
+.cyclops-screen h1{font-size:clamp(24px,4vw,36px);margin-bottom:24px}
+.cyclops-stage{position:relative;aspect-ratio:16/9;width:100%;container-type:inline-size;background:#1b2031;isolation:isolate;margin-bottom:24px}
+.cyclops-stage img{position:absolute;object-fit:contain;image-rendering:pixelated}
+.cyclops-background{inset:0;width:100%;height:100%;z-index:-1}
+.cyclops-character{left:3%;bottom:24%;width:34%;height:70%}
+.cyclops-hero{right:12%;bottom:24%;width:24%;height:52%}
+.cyclops-dialogue{position:absolute;left:5%;bottom:3%;width:90%;height:20%;font-family:monospace;color:#fff0ce}
+.cyclops-dialogue>img{inset:0;width:100%;height:100%;object-fit:fill}
+.cyclops-dialogue p{position:absolute;inset:15% 7%;display:grid;place-items:center;margin:0;font-size:clamp(10px,2.1cqw,24px);line-height:1.3}
+.cyclops-speaker{position:absolute;left:3%;bottom:86%;width:25%;height:40%;display:grid;place-items:center}
+.cyclops-speaker img{inset:0;width:100%;height:100%;object-fit:fill}
+.cyclops-speaker strong{position:relative;font-size:clamp(9px,1.7cqw,18px);letter-spacing:1px}
+@media(max-width:440px){.cyclops-screen{padding:24px 10px}.cyclops-screen h1{margin-bottom:16px}}
