@@ -13,3 +13,14 @@ body.is-cover .topbar,body.is-cover .site-footer{display:none}
 .cover-action .button{width:240px;height:72px;min-height:0;padding:0 16px;border:3px solid #ffe4a4;border-radius:0;font-family:monospace;font-size:20px;letter-spacing:3px;background:#e7bc70;box-shadow:0 5px 0 #8a592e,4px 0 0 #8a592e,-4px 0 0 #8a592e,0 9px 0 #17202bb3}
 .cover-action .hint{color:#fff4d7;font-size:12px;line-height:1.5;text-shadow:0 2px 3px #000;background:#0b1324cc;padding:2px 10px;border-radius:2px}
 @media(max-width:600px),(max-height:450px){.cover-action .button{width:190px;height:52px;font-size:17px}.cover .cover-action{gap:8px}.cover-action .hint{font-size:10px}}
+
+/* Original animated hero cards; failed images are removed by the existing loader. */
+.hero-screen .hero-grid{width:100%;max-width:min(1100px,calc(max(260px,100dvh - 350px) * 2.25 + 48px));align-items:start}
+.hero-screen .hero-card{min-width:0;padding-bottom:18px}
+.hero-screen .hero-card .artwork{width:100%;height:auto;min-height:0;max-height:none;aspect-ratio:3/4}
+.hero-screen .hero-card .artwork>img{object-fit:contain;image-rendering:pixelated}
+.hero-card:has(.artwork>img) .hero-portrait{visibility:hidden}
+.hero-card:has(.artwork>img) .hero-name{display:none}
+.hero-card .card-hint{display:block;margin-top:16px}
+.hero-card.selected{outline:2px solid var(--hero-color);outline-offset:4px}
+@media(max-width:440px){.hero-screen .hero-grid{max-width:280px;gap:24px}}

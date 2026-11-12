@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-const names = ['Cástor', 'Odiseo', 'Belerofonte'];
+const names = ['Heracles', 'Odiseo', 'Belerofonte'];
 const regions = [ ['Cueva del Cíclope', 'Contar y reconocer números'], ['Templo de Medusa', 'Mayor, menor e igual'], ['Laberinto del Minotauro', 'Restar'], ['Isla de las Sirenas', 'Sumar'] ];
 test('cover, all heroes, every region, persistence and responsive map', async ({ page }) => {
   const errors = [];
@@ -28,15 +28,15 @@ test('cover, all heroes, every region, persistence and responsive map', async ({
     }
     await page.getByRole('button', { name: 'Cambiar héroe' }).click();
   }
-  await expect(page.locator('img')).toHaveCount(0);
+  await expect(page.locator('.hero-card img')).toHaveCount(3);
   expect(errors).toEqual([]);
 });
 test('keyboard navigation and unavailable storage', async ({ page }) => {
   await page.addInitScript(() => { Object.defineProperty(window, 'localStorage', { get() { throw new Error('Blocked'); } }); });
   await page.goto('/#/mapa');
   await expect(page.getByRole('heading', { name: 'Elige a tu héroe' })).toBeVisible();
-  const castor = page.getByRole('button', { name: 'Elegir a Cástor', exact: true });
-  await castor.focus(); await page.keyboard.press('Enter');
+  const heracles = page.getByRole('button', { name: 'Elegir a Heracles', exact: true });
+  await heracles.focus(); await page.keyboard.press('Enter');
   await expect(page.getByRole('heading', { name: 'El mundo de los mitos' })).toBeVisible();
 });
 
@@ -88,4 +88,44 @@ test('cover keeps its fallback if the configured image is unavailable', async ({
   await expect(page.locator('.cover .landscape')).toBeVisible();
   await page.getByRole('button', { name: /EMPEZAR/ }).click();
   await expect(page.getByRole('heading', { name: 'Elige a tu héroe' })).toBeVisible();
+});
+
+test('original hero cards load completely at desktop, tablet and mobile sizes', async ({ page }) => {
+  for (const viewport of [{width:1920,height:1080},{width:1280,height:720},{width:768,height:1024},{width:390,height:844}]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/#/heroes');
+    const cards = page.locator('.hero-card');
+    await expect(cards).toHaveCount(3);
+    for (const name of names) {
+      const card = page.getByRole('button', { name: `Elegir a ${name}`, exact:true });
+      const image = card.locator('img');
+      await expect(image).toHaveJSProperty('complete', true);
+      expect(await image.evaluate(img => img.naturalWidth)).toBe(358);
+      await expect(image).toHaveCSS('object-fit','contain');
+      await expect(image).toHaveCSS('image-rendering','pixelated');
+      await expect(card.locator('.hero-name')).toBeHidden();
+      await expect(card.locator('.hero-portrait')).toBeHidden();
+      const box = await card.locator('.artwork').boundingBox();
+      expect(box.width/box.height).toBeCloseTo(3/4,2);
+    }
+    if (viewport.width >= 768) {
+      const boxes = await cards.evaluateAll(items=>items.map(item=>item.getBoundingClientRect().top));
+      expect(new Set(boxes).size).toBe(1);
+    }
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(viewport.width);
+  }
+});
+
+test('hero fallback remains selectable when original images fail', async ({ page }) => {
+  await page.route('**/*.gif', route=>route.abort());
+  await page.goto('/#/heroes');
+  for (const name of names) {
+    const card=page.getByRole('button',{name:`Elegir a ${name}`,exact:true});
+    await expect(card.locator('img')).toHaveCount(0);
+    await expect(card.locator('.hero-name')).toBeVisible();
+    await expect(card.locator('.hero-portrait')).toBeVisible();
+    await card.click();
+    await expect(page.locator('.hero-badge')).toContainText(name);
+    await page.getByRole('button',{name:'Cambiar héroe'}).click();
+  }
 });

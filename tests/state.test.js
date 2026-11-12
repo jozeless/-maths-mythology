@@ -10,7 +10,7 @@ test('all heroes persist and restore; invalid selections are rejected', () => {
 });
 test('blocked storage never prevents play', () => {
   const storage = { getItem() { throw Error('blocked'); }, setItem() { throw Error('blocked'); } };
-  assert.equal(readHero(storage), null); assert.equal(saveHero(storage, 'castor'), true);
+  assert.equal(readHero(storage), null); assert.equal(saveHero(storage, 'heracles'), true);
 });
 test('routes protect map and regions and resolve all configured regions', () => {
   assert.equal(resolveRoute('#/mapa', null).screen, 'heroes');

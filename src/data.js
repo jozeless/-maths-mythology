@@ -5,9 +5,9 @@ export const assets = {
   music: null,
 };
 export const heroes = [
-  { id: 'castor', name: 'Cástor', image: null, color: '#e9b85d', symbol: '♊' },
-  { id: 'odiseo', name: 'Odiseo', image: null, color: '#79bac7', symbol: '⚓' },
-  { id: 'belerofonte', name: 'Belerofonte', image: null, color: '#b7a1d8', symbol: '✦' },
+  { id: 'heracles', name: 'Heracles', image: 'assets/images/Heracles’ Clifftop Vigil Animation.gif', color: '#e9b85d', symbol: '◆' },
+  { id: 'odiseo', name: 'Odiseo', image: 'assets/images/odiseogitf.gif', color: '#79bac7', symbol: '⚓' },
+  { id: 'belerofonte', name: 'Belerofonte', image: 'assets/images/belerofontegift.gif', color: '#b7a1d8', symbol: '✦' },
 ];
 export const regions = [
   { id: 'ciclope', name: 'Cueva del Cíclope', skill: 'Contar y reconocer números', symbol: '◉', color: '#dfb376', position: { x: 25, y: 26 } },
