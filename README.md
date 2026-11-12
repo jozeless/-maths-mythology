@@ -25,7 +25,7 @@ Si ya existe Chromium en el sistema, se puede evitar la descarga:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e
 ```
 
-Los tests de navegador comprueban los tres héroes, las cuatro regiones, regreso al mapa, cambio de héroe, persistencia tras recargar, ausencia de recursos definitivos, errores de consola, teclado y tamaños 1280×720, 768×1024 y 390×844. Playwright inicia y detiene su propio servidor. Los recursos visuales actuales son composiciones provisionales en CSS; no se han utilizado ilustraciones externas.
+Los tests de navegador comprueban los tres héroes, las cuatro regiones, regreso al mapa, cambio de héroe, persistencia tras recargar, ausencia de recursos definitivos, errores de consola, teclado y tamaños 1280×720, 768×1024 y 390×844. Playwright inicia y detiene su propio servidor. La portada y los héroes usan los recursos originales proporcionados; el resto conserva composiciones provisionales en CSS.
 
 ## Organización
 
@@ -77,3 +77,11 @@ Las animaciones CSS respetan `prefers-reduced-motion`. El navegador reproduce el
 La portada ocupa `100dvh` y contiene una escena 16:9 tan grande como permite el viewport. En pantallas de otra proporción quedan bandas oscuras, sin recortar ni estirar el WebP. Solo se muestran la ilustración, EMPEZAR (240 × 72 px en escritorio) y su indicación; en móvil el control se reduce a 190 × 52 px para respetar la composición. El título permanece como encabezado accesible visualmente oculto.
 
 La clase de estado `body.is-cover` oculta exclusivamente en la portada el encabezado y footer. Al salir reaparecen, incluido el control de sonido conservado. No se necesita usar la API Fullscreen ni conceder permisos del navegador.
+
+## Héroes animados
+
+`heroes[].image` referencia directamente los GIF originales de Heracles, Odiseo y Belerofonte en `public/assets/images/`. Los archivos se mantienen con sus nombres originales, bytes y 9 fotogramas; no se convierten ni se modifican. Sus dimensiones reales son 358 × 477 px (Heracles y Odiseo) y 358 × 474 px (Belerofonte). Se presentan completos dentro de un área 3:4 con `object-fit: contain` e `image-rendering: pixelated`.
+
+Las tres tarjetas se alinean horizontalmente en escritorio y tablet; en móvil estrecho pasan a una columna. El nombre dibujado en la ilustración sustituye visualmente al nombre HTML, manteniendo el nombre accesible en el botón. Si un GIF falla, el cargador existente retira la imagen y reaparecen figura y nombre provisionales. Toda la tarjeta continúa siendo seleccionable y conserva los efectos de hover y selección.
+
+Heracles sustituye a Cástor en los datos. Una selección antigua `castor` deja de ser válida y el jugador puede elegir de nuevo; las selecciones de Odiseo y Belerofonte continúan siendo válidas. No cambia la lógica de almacenamiento ni navegación. Como sucede con el WebP, las animaciones internas de GIF en `<img>` no se pueden pausar mediante CSS; se conservan las originales.
