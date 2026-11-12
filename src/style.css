@@ -24,3 +24,18 @@ body.is-cover .topbar,body.is-cover .site-footer{display:none}
 .hero-card .card-hint{display:block;margin-top:16px}
 .hero-card.selected{outline:2px solid var(--hero-color);outline-offset:4px}
 @media(max-width:440px){.hero-screen .hero-grid{max-width:280px;gap:24px}}
+
+/* Map and markers always share the same undistorted coordinate plane. */
+.map-screen .map-frame{aspect-ratio:16/9;container-type:inline-size}
+.map-art:has(>img) .map-land{visibility:hidden}
+.map-region{width:40%;min-height:44px;padding:0;gap:5px}
+.map-region .region-medallion{width:clamp(48px,10cqw,110px);aspect-ratio:1;overflow:visible;transition:transform .18s ease,filter .18s ease}
+.region-medallion>img{object-fit:contain;image-rendering:pixelated;background:transparent}
+.region-medallion:has(>img) .region-icon{visibility:hidden}
+.region-medallion .region-icon{width:100%;height:100%}
+.map-region:hover .region-medallion{transform:scale(1.06);filter:drop-shadow(0 0 7px #f6cf6d88)}
+.map-region:hover .region-icon{transform:none}
+.map-region:active .region-medallion{transform:scale(.96)}
+.map-region:focus-visible{outline:3px solid #ffe4a4;outline-offset:3px;border-radius:5px}
+.map-region .region-label{font-size:clamp(10px,1.5cqw,16px);padding:5px 8px;line-height:1.2;max-width:100%}
+@media(max-width:440px){.map-region{gap:2px}.map-region .region-label{padding:3px 4px;font-size:10px}.map-screen{padding-left:12px;padding-right:12px}}
