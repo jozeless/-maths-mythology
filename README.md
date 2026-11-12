@@ -85,3 +85,16 @@ La clase de estado `body.is-cover` oculta exclusivamente en la portada el encabe
 Las tres tarjetas se alinean horizontalmente en escritorio y tablet; en móvil estrecho pasan a una columna. El nombre dibujado en la ilustración sustituye visualmente al nombre HTML, manteniendo el nombre accesible en el botón. Si un GIF falla, el cargador existente retira la imagen y reaparecen figura y nombre provisionales. Toda la tarjeta continúa siendo seleccionable y conserva los efectos de hover y selección.
 
 Heracles sustituye a Cástor en los datos. Una selección antigua `castor` deja de ser válida y el jugador puede elegir de nuevo; las selecciones de Odiseo y Belerofonte continúan siendo válidas. No cambia la lógica de almacenamiento ni navegación. Como sucede con el WebP, las animaciones internas de GIF en `<img>` no se pueden pausar mediante CSS; se conservan las originales.
+
+## Mapa y medallones definitivos
+
+`assets.map` usa `Mythic Isles_ A Hero’s Journey.png`, cuyo tamaño real es 1672 × 941 px (aproximadamente 16:9). El cargador conserva esa proporción natural, sin recortes ni deformación. El mapa no cambia a 4:3 o 1:1 en tablet/móvil: ilustración y botones comparten siempre el mismo contenedor y coordenadas porcentuales.
+
+`regions[].icon` referencia los PNG originales, sin marcos adicionales ni modificaciones:
+
+- Cíclope: `ChatGPT Image Nov 12, 2026, 12_02_01 PM-1.png` (ojo), posición 26%, 27%.
+- Medusa: `ChatGPT Image Nov 12, 2026, 12_13_01 PM.png` (serpiente), posición 78%, 27%.
+- Minotauro: `ChatGPT Image Nov 12, 2026, 12_13_23 PM.png` (cuerno), posición 25%, 72%.
+- Sirenas: `ChatGPT Image Nov 12, 2026, 12_13_37 PM.png` (ala), posición 77%, 73%.
+
+Los botones tienen nombres accesibles de región, foco visible y áreas táctiles de al menos 44 px. Los medallones crecen ligeramente y muestran un resplandor dorado al pasar el ratón; al pulsar se contraen brevemente. Se respeta la regla global de movimiento reducido. Si falla un recurso, el cargador existente conserva el mapa o símbolo provisional correspondiente.

@@ -129,3 +129,28 @@ test('hero fallback remains selectable when original images fail', async ({ page
     await page.getByRole('button',{name:'Cambiar héroe'}).click();
   }
 });
+
+test('definitive map and medallions align at every viewport and support keyboard', async ({ page }) => {
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+ await page.goto('/#/heroes');await page.getByRole('button',{name:'Elegir a Heracles',exact:true}).click();
+ for(const viewport of [{width:1920,height:1080},{width:1280,height:720},{width:768,height:1024},{width:390,height:844}]) {
+  await page.setViewportSize(viewport);
+  await expect(page.locator('.map-art>img')).toHaveJSProperty('naturalWidth',1672);
+  const frame=await page.locator('.map-frame').boundingBox();expect(frame.width/frame.height).toBeCloseTo(16/9,1);
+  const boxes=[];
+  for(const [name] of regions) {
+   const button=page.getByRole('button',{name,exact:true});
+   await expect(button.locator('img')).toHaveJSProperty('naturalWidth',1254);
+   const box=await button.boundingBox();boxes.push(box);expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);
+   expect(box.x).toBeGreaterThanOrEqual(frame.x);expect(box.x+box.width).toBeLessThanOrEqual(frame.x+frame.width);
+   expect(box.y).toBeGreaterThanOrEqual(frame.y);expect(box.y+box.height).toBeLessThanOrEqual(frame.y+frame.height);
+   await button.focus();await page.keyboard.press('Enter');await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();
+   await page.getByRole('button',{name:/VOLVER AL MAPA/}).click();
+  }
+  for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){
+   const a=boxes[i],b=boxes[j];expect(a.x+a.width<=b.x || b.x+b.width<=a.x || a.y+a.height<=b.y || b.y+b.height<=a.y).toBeTruthy();
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(viewport.width);
+ }
+ expect(errors).toEqual([]);
+});
