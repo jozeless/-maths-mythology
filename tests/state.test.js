@@ -22,3 +22,8 @@ test('routes protect map and regions and resolve all configured regions', () => 
   }
   assert.equal(resolveRoute('#/unknown', heroes[0]).screen, 'cover');
 });
+
+test('cyclops scene requires a selected hero', () => {
+  assert.equal(resolveRoute('#/aventura/ciclope',null).screen,'heroes');
+  for(const hero of heroes) assert.equal(resolveRoute('#/aventura/ciclope',hero).screen,'cyclops');
+});

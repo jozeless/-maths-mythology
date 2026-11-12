@@ -1,0 +1,5 @@
+import { cyclopsAssets } from './data.js';
+const url = path => `${import.meta.env.BASE_URL}${path}`;
+export function cyclopsScene(hero) {
+  return `<section class="screen cyclops-screen"><h1>Cueva de Polifemo</h1><div class="cyclops-stage" role="group" aria-label="Escenario de la cueva de Polifemo"><img class="cyclops-background" src="${url(cyclopsAssets.background)}" alt="Interior de la cueva con una mesa y antorchas"><img class="cyclops-character" src="${url(cyclopsAssets.awake)}" alt="Polifemo despierto, sentado a la izquierda"><img class="cyclops-hero" src="${url(cyclopsAssets.seated[hero.id])}" alt="${hero.name} sentado en una roca"><div class="cyclops-dialogue"><img src="${url(cyclopsAssets.dialogue)}" alt="" aria-hidden="true"><div class="cyclops-speaker"><img src="${url(cyclopsAssets.nameplate)}" alt="" aria-hidden="true"><strong>POLIFEMO</strong></div><p>¡Tengo sed! ¡Tráeme unas copas de vino!</p></div></div><button class="button quiet" data-route="mapa">← VOLVER AL MAPA</button></section>`;
+}

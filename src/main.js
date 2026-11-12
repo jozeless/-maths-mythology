@@ -1,4 +1,6 @@
 import './style.css';
+import './cyclops.css';
+import { cyclopsScene } from './cyclops.js';
 import { assets } from './data.js';
 import { readHero, saveHero, resolveRoute } from './state.js';
 import { heroes } from './data.js';
@@ -13,7 +15,7 @@ const screen = document.querySelector('#screen');
 const router = createRouter(hash => {
   const route = resolveRoute(hash, hero);
   document.body.classList.toggle('is-cover', route.screen === 'cover');
-  screen.innerHTML = route.screen === 'heroes' ? heroSelection(hero) : route.screen === 'map' ? map(hero) : route.screen === 'region' ? regionView(route.region) : cover();
+  screen.innerHTML = route.screen === 'cyclops' ? cyclopsScene(hero) : route.screen === 'heroes' ? heroSelection(hero) : route.screen === 'map' ? map(hero) : route.screen === 'region' ? regionView(route.region) : cover();
   screen.querySelectorAll('img').forEach(img => {
     const cover = img.closest('.cover');
     const hide = () => { cover?.classList.remove('cover-loaded'); img.remove(); };

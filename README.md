@@ -98,3 +98,11 @@ Heracles sustituye a Cástor en los datos. Una selección antigua `castor` deja 
 - Sirenas: `ChatGPT Image Nov 12, 2026, 12_13_37 PM.png` (ala), posición 77%, 73%.
 
 Los botones tienen nombres accesibles de región, foco visible y áreas táctiles de al menos 44 px. Los medallones crecen ligeramente y muestran un resplandor dorado al pasar el ratón; al pulsar se contraen brevemente. Se respeta la regla global de movimiento reducido. Si falla un recurso, el cargador existente conserva el mapa o símbolo provisional correspondiente.
+
+## Escenario de Polifemo
+
+Recorrido: mapa → Cueva del Cíclope → introducción → **ENTRAR EN LA CUEVA** → escenario. `#/aventura/ciclope` requiere un héroe seleccionado y conserva su selección al recargar y volver al mapa. Las otras regiones conservan sus introducciones actuales.
+
+`src/cyclops.js` presenta el escenario y `src/cyclops.css` contiene únicamente sus estilos. Las referencias se centralizan en `cyclopsAssets` de `src/data.js`. Fondo y personajes se muestran completos en un escenario 16:9 mediante posiciones porcentuales y `object-fit: contain`. El fondo original mide 1672×941, prácticamente 16:9. Las cajas de diálogo usan los PNG originales con nombre y frase superpuestos como HTML accesible.
+
+Se conservaron los 19 PNG necesarios para esta fase y las siguientes sin alterar su contenido. Solo se normalizaron nombres con ` (1)` o espacios sobrantes y se omitió `placa.png`, como se solicitó. No se incluyen conteo, carneros interactivos, movimiento, sueño, recompensas ni sonidos nuevos. El escenario es estático y está preparado para desarrollar esas mecánicas en otros PR.

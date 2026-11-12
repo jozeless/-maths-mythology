@@ -15,3 +15,13 @@ export const regions = [
   { id: 'minotauro', icon: 'assets/images/ChatGPT Image Nov 12, 2026, 12_13_23 PM.png', name: 'Laberinto del Minotauro', skill: 'Restar', symbol: '⊞', color: '#d79677', position: { x: 25, y: 72 } },
   { id: 'sirenas', icon: 'assets/images/ChatGPT Image Nov 12, 2026, 12_13_37 PM.png', name: 'Isla de las Sirenas', skill: 'Sumar', symbol: '♫', color: '#88c3d3', position: { x: 77, y: 73 } },
 ].map(region => ({ ...region, image: null, animation: null, music: null, narration: null, story: null, challenges: [], reward: null, progress: null }));
+
+// Reserved resources remain in public/assets/images/cyclops for later phases.
+const cyclopsPath = name => `assets/images/cyclops/${name}.png`;
+export const cyclopsAssets = {
+  background: cyclopsPath('cueva-fondo'),
+  awake: cyclopsPath('polifemo-despierto'),
+  dialogue: cyclopsPath('dialogo-principal'),
+  nameplate: cyclopsPath('dialogo-nombre'),
+  seated: Object.fromEntries(heroes.map(hero => [hero.id, cyclopsPath(`${hero.id}-sentado`)])),
+};
